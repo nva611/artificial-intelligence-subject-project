@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8  offset-lg-2">
+                <h2>Select a file to upload</h2>
+                <p>
+                    {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                <ul>
+                    {% for message in messages %}
+                    <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                {% endwith %}
+                </p>
+                {% if filename %}
+                <div>
+                    <img src="{{ url_for('display_image') }}">
+                </div>
+                {% endif %}
+                <form method="post" action="dogorcat" enctype="multipart/form-data">
+                    <dl>
+                        <p>
+                            <input type="file" name="file" class="form-control" autocomplete="off" required>
+                        </p>
+                    </dl>
+                    <p>
+                        <input type="submit" value="Submit" class="btn btn-info">
+                    </p>
+                </form>
+
+                <p>{{result}}</p>
+            </div>
+        </div>
+    </div>
+</body>
+
+
+</html>
