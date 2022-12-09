@@ -144,21 +144,17 @@ def create_data():
     name = request.form.get('name')
     result = face_recognize.idExisted(id)
     if (result == True):
-        print("NOT OK")
         flash('Id already exists please choose another id')
         return redirect("/face")
 
     face_recognize.writeToCSV(id, name)
     face_recognize.createDataSet(id, name)
     face_recognize.trainModel()
-    response = make_response(render_template('facerecognize.html'))
     return redirect(url_for("result_face_recognize", result=1))
 
 
 @app.route('/result_face_recognize', methods=['POST', 'GET'])
 def result_face_recognize():
-    # a = request.args.get('result')
-    # print("ADUMAN==", a)
     return render_template('resultFaceRecognize.html')
 
 
@@ -172,25 +168,6 @@ def ok():
     print("ok day")
 
 
-# @app.route('/checkid', methods=['POST', 'GET'])
-# def checkid():
-#     id = request.form.get('id')
-#     name = request.form.get('name')
-#     result = face_recognize.idExisted(id)
-#     if (result):
-#         face_recognize.writeToCSV(id, name)
-#         print("HOP LE")
-#         return redirect(url_for("face"))
-#         # return render_template('facerecognize.html', id=id, name=name)
-#     flash('Image successfully uploaded and displayed below')
-#     print("KOJNG HOP LE")
-#     response = make_response(render_template(
-#         'facerecognize.html', checkid=False))
-#     # return response
-#     # return render_template('facerecognize.html', checkid=False)
-#     return redirect("/face")
-
-
 @app.route('/function/<FUNCTION>')
 def command(FUNCTION=None):
 
@@ -201,14 +178,8 @@ def command(FUNCTION=None):
         result = eval(FUNCTION.replace("<br>", "\n"))
     except:
         print("ERORR")
-    res = {
-        "result": result
-    }
-    # response = make_response(jsonify(result=result))
-    # redirect(request.url, code=202)
-    # render_template("index.html", result=result)
-    # redirect(PAGE, code=202)
-    return jsonify(res)
+
+    return ""
 
 
 if __name__ == '__main__':
