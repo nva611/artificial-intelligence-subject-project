@@ -41,9 +41,6 @@
         {% endwith %}
         </p>
 
-        {% if checkid == "no" %}
-        <h1>TRung ID</h1>
-        {% endif %}
         <div class="row">
             <h3 class="mt-5">FACE RECOGNIZE</h3>
         </div>
@@ -53,7 +50,8 @@
                 <figure class="figure">
                     <img class="figure-img img-fluid rounded img-responsive img-center" id=" screen"
                         src="{{ url_for('video_feed') }}" />
-                    <figcaption class="figure-caption text-center">A caption for the above image.</figcaption>
+                    <figcaption class="figure-caption text-center">Look at the camera after pressing the create button
+                    </figcaption>
                 </figure>
 
 
