@@ -71,7 +71,7 @@
                     <button type="submit" class="btn btn-primary mb-2">Create database and train👀</button>
                 </form>
                 <div class="d-flex">
-                    <button onclick="deleteAll()" class="btn btn-danger mr-2">Delete All Data✖️</button>
+                    <button onclick="deleteHandler()" class="btn btn-danger mr-2">Delete All Data✖️</button>
                     <a href="/result_face_recognize" class="btn btn-dark btn-block ml-2" style="width:fit-content;">Face Recognize🔍</a>
                 </div>
 
@@ -117,6 +117,13 @@
         // function recognize1() {
         //     document.getElementById("screen").setAttribute("src", `{{ url_for('face_recognize_live') }}`);
         // }
+
+        function deleteHandler(){
+            deleteAll();
+            window.setTimeout(() =>{
+                window.location.reload();
+            }, 3000);
+        }
     </script>
 </body>
 
