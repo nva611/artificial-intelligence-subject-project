@@ -13,31 +13,7 @@ import time
 exitFlag = 0
 
 
-class myThread(threading.Thread):
-    def __init__(self, idLuong, id, name):
-        threading.Thread.__init__(self)
-        self.idLuong = idLuong
-        self.id = id
-        self.name = name
-
-    def run(self):
-        print("Bat dau luong: ")
-        face_recognize.test(self.name)
-        face_recognize.createData(self.id, self.name)
-        print("Ket thuc luong: ")
-
-
-def print_time(tenLuong, soLuong, delay):
-    while soLuong:
-        if exitFlag:
-            tenLuong.exit()
-        time.sleep(delay)
-        print("{0}: {1}".format(tenLuong, time.ctime(time.time())))
-        soLuong -= 1
-
-
 app = Flask(__name__)
-camera = cv2.VideoCapture(0)
 
 UPLOAD_FOLDER = 'static/uploads/'
 app.secret_key = "aaa"
@@ -62,13 +38,6 @@ def dogcat_recognize(filepath):
     return new_array.reshape(-1, IMG_SIZE, IMG_SIZE, 1)
 
 
-model = tf.keras.models.load_model("64x3-CNN.model")
-
-
-# prediction = model.predict([face_recognize('dog.jpg')])
-# print(prediction)  # will be a list in a list.
-# print(CATEGORIES[int(prediction[0][0])])
-
 ###########################################
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -78,7 +47,7 @@ def allowed_file(filename):
 def index():
     return render_template('index.html')
 
-# ================================ START DOG OR CAT
+# ================================ START DOG OR CAT =================================
 
 
 @app.route('/dogorcat')
@@ -88,6 +57,8 @@ def getDogOrCat():
 
 @app.route('/dogorcat', methods=['POST'])
 def recognizeDogOrCat():
+
+    model = tf.keras.models.load_model("./DogOrCat/64x3-CNN.model")
     if 'file' not in request.files:
         flash('No file part')
         return redirect(request.url)
@@ -113,10 +84,10 @@ def recognizeDogOrCat():
 @app.route('/display')
 def display_image():
     return redirect(url_for('static', filename='uploads/' + 'dogorcat.jpg'), code=301)
-# ================================ END DOG OR CAT
+# ================================ END DOG OR CAT ================================
 
 
-# ================================ START FACE RECOGNIZE
+# ================================ START FACE RECOGNIZE ================================
 
 
 @app.route('/face')
@@ -124,18 +95,6 @@ def face():
     id, name = face_recognize.getList()
     print("TRA VE", id, name)
     return render_template('facerecognize.html', id=id, name=name)
-
-
-@app.route('/video_feed')
-def video_feed():
-    # face_recognize.createData(id, name)
-    return Response(my_camera.gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
-
-
-@ app.route('/video/<NAME>')
-def video():
-    print("AAAAAAAAAAAAAAAAA=========" + request.args['NAME'])
-    return Response(my_camera.gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 @ app.route('/create_data', methods=['POST'])
@@ -163,9 +122,7 @@ def face_recognize_live():
     return Response(face_recognize.recognize(), mimetype='multipart/x-mixed-replace; boundary=frame')
 # face_recognize.recognize()
 
-
-def ok():
-    print("ok day")
+# =============================== END FACE RECOGNIZE =============================
 
 
 @app.route('/function/<FUNCTION>')
