@@ -129,7 +129,7 @@ def createData(face_id, name):
         k = cv2.waitKey(100) & 0xff  # Press 'ESC' for exiting video
         if k == 27:
             break
-        elif count >= 10:
+        elif count >= 100:
             break
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
