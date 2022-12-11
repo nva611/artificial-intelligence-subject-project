@@ -39,7 +39,7 @@ class_names = list(train_ds.class_indices.keys())
 test_datagen = tf.keras.preprocessing.image.ImageDataGenerator(
     rescale=1./255)
 test_ds = test_datagen.flow_from_directory(
-    "test",
+    "../static/uploads/trafic",
     target_size=(HEIGHT, WIDTH),
     shuffle=False
 )
