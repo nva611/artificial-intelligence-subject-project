@@ -39,7 +39,7 @@ class_names = list(train_ds.class_indices.keys())
 test_datagen = tf.keras.preprocessing.image.ImageDataGenerator(
     rescale=1./255)
 test_ds = test_datagen.flow_from_directory(
-    "static/uploads/trafic",
+    "static/uploads/traffic",
     target_size=(HEIGHT, WIDTH),
     shuffle=False
 )
@@ -63,14 +63,27 @@ def my_predict(model, img):
 
 
 def recognize():
+    predicted_class = ""
+    confidence = ""
     for images, labels in test_ds:
         # print(labels)
         predicted_class, confidence = my_predict(model, images[0])
         # actual_class = class_names[int(labels[i])]
-        plt.imshow(images[0])
-        plt.title(
-            f"Actual: Predicted: {predicted_class}.\n Confidence: {confidence}%")
-
-        plt.axis("off")
-        plt.show()
         break
+    if(predicted_class == "GuideSign"):
+        return "Guide Sign"
+    elif(predicted_class == "M1"):
+        return "Command Sign"
+    elif(predicted_class =="M4"):
+        return "Car Sign"
+    elif(predicted_class == "M5"):
+        return "Bike Sign"
+    elif(predicted_class =="M7"):
+        return "Pedestrian Crossing Sign"
+    elif(predicted_class == "P1"):
+        return "Prohibition Sign"
+    elif(predicted_class =="P10_50"):
+        return "Speeding Limit Sign"
+    elif(predicted_class =="W1"):
+        return "Warning Sign"
+    return "Unrecognizable"
