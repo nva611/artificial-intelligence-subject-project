@@ -11,6 +11,7 @@ import os
 from werkzeug.utils import secure_filename
 import _thread
 import threading
+from TrafficSignRecognize import traffic
 import time
 exitFlag = 0
 
@@ -110,6 +111,10 @@ def display_image():
 @app.route('/displaysymbol')
 def display_symbol():
     return redirect(url_for('static', filename='uploads/' + 'symbol.jpg'), code=301)
+
+@app.route('/displaytrafficsign')
+def display_trafficsign():
+    return redirect(url_for('static', filename='/uploads/traffic/test/' + 'test.jpg'), code=301)
 # ================================ END DOG OR CAT ================================
 
 
@@ -151,6 +156,8 @@ def video_feed():
     # face_recognize.createData(id, name)
     return Response(my_camera.gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
+# =============================== END FACE RECOGNIZE =============================
+
 # =============================== Symbol===============================
 @app.route('/symbol')
 def getSymbol():
@@ -178,10 +185,36 @@ def recognizeSymbol():
         flash('Allowed image types are - png, jpg, jpeg, gif')
         return redirect(request.url)   
 
+# =============================== End Symbol===============================
 
+# =============================== Traffic Signs===============================
+@app.route('/traffic')
+def getTraffic():
+    return render_template('traffic.html')
 
-# =============================== END FACE RECOGNIZE =============================
+@app.route('/traffic', methods=['POST'])
+def recognizeTraffic():
 
+    model = tf.keras.models.load_model("./TrafficSignRecognize/ok.h5")
+    if 'file' not in request.files:
+        flash('No file part')
+        return redirect(request.url)
+    file = request.files['file']
+    if file.filename == '':
+        flash('No image selected for uploading')
+        return redirect(request.url)
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], 'traffic/test/test.jpg'))
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], 'test.jpg'))
+        # print('upload_image filename: ' + filename)
+        # flash('Image successfully uploaded and displayed below')
+        result =  traffic.recognize()
+        return render_template('traffic.html', filename="test.jpg", result=result)
+    else:
+        flash('Allowed image types are - png, jpg, jpeg, gif')
+        return redirect(request.url)   
+# =============================== End Traffic Sign===============================
 
 @app.route('/function/<FUNCTION>')
 def command(FUNCTION=None):
