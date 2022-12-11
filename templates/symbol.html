@@ -10,7 +10,7 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8  offset-lg-2">
-                <h2>Dog 🐶 & Cat 😺 Recognization App</h2>
+                <h2>Handwritten ✍️ Math Symbol Recognization</h2>
                 <p>
                     {% with messages = get_flashed_messages() %}
                     {% if messages %}
@@ -25,17 +25,16 @@
                 {% if filename %}
                 <div>
                     <figure class="figure">
-                        <img width="500" height="500" src="{{ url_for('display_image') }}"
+                        <img width="500" height="500" src="{{ url_for('display_symbol') }}"
                             class="figure-img img-fluid rounded" alt="dog or cat">
-                        <figcaption class="text-center">It is a {{result}}</figcaption>
+                        <figcaption class="text-center">Symbol is "{{result}}"</figcaption>
                     </figure>
                 </div>
                 {% endif %}
-                <form method="post" action="dogorcat" enctype="multipart/form-data">
+                <form method="post" action="symbol" enctype="multipart/form-data">
                     <dl>
                         <div class="mb-3">
-                            <label for="formFile" class="form-label">Please choose a photo with a dog or a cat for a
-                                good experience</label>
+                            <label for="formFile" class="form-label">Please choose a photo contain a symbol</label>
                             <input class="form-control" name="file" type="file" id="formFile" autocomplete="off"
                                 required>
                         </div>
